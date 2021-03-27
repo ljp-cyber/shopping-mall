@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+  <!-- 配置数据库连接的包 -->
+  <!-- <classPathEntry location="/Program Files/IBM/SQLLIB/java/db2java.zip" 
+    /> -->
+  <context id="MyGererator" targetRuntime="MyBatis3">
+    <!-- 这里引入扩展插件 -->
+    <plugin type="com.ljp.PaginationPlugin2" />
+
+    <!-- 这个标签可以去掉注释 -->
+    <commentGenerator>
+      <!-- 去掉注释 -->
+      <property name="suppressAllComments" value="true" />
+      <!-- 去掉时间戳 -->
+      <property name="suppressDate" value="true" />
+    </commentGenerator>
+
+    <!-- 数据库连接信息 -->
+    <jdbcConnection
+      driverClass="com.mysql.cj.jdbc.Driver"
+      connectionURL="jdbc:mysql://localhost:3306/shops" userId="root"
+      password="root">
+      <!--MySQL 8.x 需要指定服务器的时区 -->
+      <property name="serverTimezone" value="UTC" />
+      <!--MySQL 不支持 schema 或者 catalog 所以需要添加这个，否则会添加不同库同名表 -->
+      <!--参考 : http://www.mybatis.org/generator/usage/mysql.html -->
+      <property name="nullCatalogMeansCurrent" value="true" />
+      <!-- MySQL8默认启用 SSL ,不关闭会有警告 -->
+      <property name="useSSL" value="false" />
+    </jdbcConnection>
+
+    <!-- JAVA JDBC数据类型转换 -->
+    <javaTypeResolver type="com.ljp.MyTypeResolver">
+      <property name="forceBigDecimals" value="false" />
+    </javaTypeResolver>
+
+    <!-- javaModelGenerator javaBean配置 targetPackage 输入包名 输出路径 targetProject 
+      输出项目位置 -->
+    <javaModelGenerator targetPackage="com.ljp.bean"
+      targetProject="src/main/java">
+      <!-- enableSubPackages 是否开启子包名称 是否在包名后边加上scheme名称 -->
+      <property name="enableSubPackages" value="false" />
+      <!-- 在Set中加入.trim -->
+      <property name="trimStrings" value="true" />
+    </javaModelGenerator>
+
+    <!-- mapper.xml -->
+    <sqlMapGenerator targetPackage="com.ljp.mapper"
+      targetProject="src/main/java">
+      <property name="enableSubPackages" value="false" />
+    </sqlMapGenerator>
+
+    <!-- java接口 -->
+    <javaClientGenerator type="XMLMAPPER"
+      targetPackage="com.ljp.mapper" targetProject="src/main/java">
+      <property name="enableSubPackages" value="true" />
+    </javaClientGenerator>
+
+    <!-- 数据表 要根据数据库中的表来生成 -->
+    <table schema="shops" tableName="category">
+      <!-- 使用实际列名 -->
+      <property name="useActualColumnNames" value="false" />
+      <!-- 这个元素用来指定自动生成主键的属性（identity字段或者sequences序列） -->
+      <!-- <generatedKey column="ID" sqlStatement="DB2" identity="true" /> -->
+      <!-- 该元素可以用来屏蔽不需要生成的列。 -->
+      <!-- <ignoreColumn column="FRED" /> -->
+      
+      <!-- 该元素将某些属性默认计算的值更改为指定的值 -->
+      <!-- <columnOverride column="username"> -->
+        <!-- 使用property属性来指定列要生成的属性名称 -->
+        <!-- <property name="property" value="userName" /> -->
+
+        <!-- javaType用于指定生成的domain的属性类型，使用类型的全限定名 -->
+        <!-- <property name="javaType" value="" /> -->
+
+        <!-- jdbcType用于指定该列的JDBC类型 -->
+        <!-- <property name="jdbcType" value="" /> -->
+
+        <!-- typeHandler 用于指定该列使用到的TypeHandler，如果要指定，配置类型处理器的全限定名;
+                      注意，mybatis中，不会生成到mybatis-config.xml中的typeHandler,只会生成类似:
+        where id = #{id,jdbcType=BIGINT,typeHandler=com._520it.mybatis.MyTypeHandler}的参数描述 -->
+        <!-- <property name="jdbcType" value="" /> -->
+
+        <!-- 参考table元素的delimitAllColumns配置，默认为false -->
+        <!-- <property name="delimitedColumnName" value="" /> -->
+      <!-- </columnOverride> -->
+    </table>
+
+  </context>
+</generatorConfiguration>

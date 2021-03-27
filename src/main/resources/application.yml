@@ -1,0 +1,20 @@
+server:
+  port: 8080
+logging:
+  level:
+    org.springframework.security: debug
+    com.ljp.monitor: debug
+
+#数据库配置
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/shops?serverTimezone=GMT%2B8&characterEncoding=utf-8
+    username: root
+    password: root
+
+mybatis:
+  mapperLocations: classpath:/mapper/*.xml
+  config-location: classpath:/mybatis-config.xml
+  typeAliasesPackage: com.ljp.model
+#mapper:
+#  mappers: com.ljp.mapper.UserMapper
